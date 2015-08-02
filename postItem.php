@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      $fileToUpload1 = "empty";
    } else {
      $fileToUpload1 = test_input($_POST["fileToUpload1"]);
-     $photoCnt = $photoCnt + 1;
+     $photoCnt = $photoCnt + 1; 
    }
   if (empty($_POST["fileToUpload2"])) {
      $fileToUpload2 = "empty";
@@ -73,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    //check each potential upload file for size < 500KB
    //check for != 'empty' here (need to fix code above to set 'empty')
    $string1 = "fileToUpload1";
+
    $photoErr1 = checkSizeType($string1); 
    $string1 = "fileToUpload2";
    $photoErr2 = checkSizeType($string1);
@@ -91,16 +92,33 @@ if ($fail == 'true') {
   //should default to form here and display error message for field that failed
 } else {  //need to move into section below for if $fail = 'false'
   //this is where the file is moved from special area to real file
-  $target_dir = "photos/";
-  $target_file1 = $target_dir . basename($_FILES["fileToUpload1"]["name"]);
-  $target_file2 = $target_dir . basename($_FILES["fileToUpload2"]["name"]);
-  $target_file3 = $target_dir . basename($_FILES["fileToUpload3"]["name"]);
-
    //$imageName is file name provided by the user: userfilename.jpg
-   //$target_file file name provided by use with path added:  photos/userfilename.jpg
+   //$target_file file name provided by user with path added:  photos/userfilename.jpg
+
+
+  //the if statements below are a fix for the ios (ipad, iphone) problem of calling all
+// files image.jpg.  Files were getting overwritten when copied to server.  Had to
+//rename them if they were named 'image.jpg',  better fix would be to to
+//change name if $imageName2 == $imageName1,  not expect name to be 'image.jpg'
    $imageName1 = basename($_FILES["fileToUpload1"]["name"]); //this is inserted into db
    $imageName2 = basename($_FILES["fileToUpload2"]["name"]);
+     if ($imageName2 == "image.jpg") {
+     $imageName2 = "image2.jpg"; 
+    }
+
    $imageName3 = basename($_FILES["fileToUpload3"]["name"]);
+  if ($imageName3 == "image.jpg") {
+     $imageName3 = "image3.jpg"; 
+    }
+
+  $target_dir = "photos/";
+  $target_file1 = $target_dir . $imageName1;
+  $target_file2 = $target_dir . $imageName2;
+  $target_file3 = $target_dir . $imageName3;
+
+   //$imageName is file name provided by the user: userfilename.jpg
+   //$target_file file name provided by user with path added:  photos/userfilename.jpg
+
    move_uploaded_file($_FILES["fileToUpload1"]["tmp_name"], $target_file1);
    move_uploaded_file($_FILES["fileToUpload2"]["tmp_name"], $target_file2);
    move_uploaded_file($_FILES["fileToUpload3"]["tmp_name"], $target_file3);
@@ -135,30 +153,30 @@ if ($fail == 'true') {
 /**** change photo name from user provided name to name of format imageA + idnum + .jpg **/
 /*** and rename the photo file that is in ../photos/  **************/
     if ($imageName1 != "") {
-      //echo "imageName1 is a; $imageName1";
       $savetoA = "imageA$itemid.jpg";  //make new variable $saveto that is imageitemid.jpg,  ex image87.jpg
       rename("$target_file1", "photos/$savetoA");
       }
       else {
         $savetoA = "";
-        //echo "imageName1 doesn't exist but is a; $imageName1";
+        echo "imageName1 doesn't exist but is : $imageName1";
 
       }
       if ($imageName2 != "")  {
-      //echo "imageName2 is $imageName2";
       $savetoB = "imageB$itemid.jpg";
       rename("$target_file2", "photos/$savetoB");
       }
       else {
         $savetoB = "";
+        echo "imageName2 doesn't exist but is : $imageName2";
       }
       if ($imageName3 != "")  {
-      //echo "imageName3 is $imageName3";
       $savetoC = "imageC$itemid.jpg";
       rename("$target_file3", "photos/$savetoC");
       }
       else {
         $savetoC = "";
+        echo "imageName3 doesn't exist but is : $imageName3";
+
       }
 
     //update record with image names using idnum format
