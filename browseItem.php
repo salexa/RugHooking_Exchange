@@ -28,7 +28,7 @@
 </head>
 
 <body>
-
+<?php include_once("analyticstracking.php") ?>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">

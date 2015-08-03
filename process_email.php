@@ -1,5 +1,6 @@
 <html>
 <body>
+<?php include_once("analyticstracking.php") ?>
 <?php 
 include_once 'functions_rhe.php';
 extract($_POST);	
