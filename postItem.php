@@ -48,39 +48,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    } else {
      $state = test_input($_POST["state"]);
    }
-   
-   ///this is not doing anything something is wrong with this
-  //if (empty($_POST["fileToUpload1"])) 
+     
     if ($_FILES["fileToUpload1"]["size"] == 0) {
      $fileToUpload1 = "empty";
+   //  echo "I think fileToUpload1 is empty";
    } else {
      $fileToUpload1 = test_input($_POST["fileToUpload1"]);
      $photoCnt = $photoCnt + 1; 
    }
-  if (empty($_POST["fileToUpload2"])) {
+    if ($_FILES["fileToUpload2"]["size"] == 0) {
      $fileToUpload2 = "empty";
+  //   echo "I think fileToUpload2 is empty";
    } else {
      $fileToUpload2 = test_input($_POST["fileToUpload2"]);
      $photoCnt = $photoCnt + 1;
    }
-   if (empty($_POST["fileToUpload3"])) {
+    if ($_FILES["fileToUpload3"]["size"] == 0) {
      $fileToUpload3 = "empty";
+ //    echo "I think fileToUpload3 is empty";
+
    } else {
      $fileToUpload3 = test_input($_POST["fileToUpload3"]);
      $photoCnt = $photoCnt + 1;
    }
-   
-   //check each potential upload file for size < 500KB
-   //check for != 'empty' here (need to fix code above to set 'empty')
-   $string1 = "fileToUpload1";
 
-   $photoErr1 = checkSizeType($string1); 
-   $string1 = "fileToUpload2";
-   $photoErr2 = checkSizeType($string1);
-   $string1 = "fileToUpload3";
-   $photoErr3 = checkSizeType($string1); 
+/***overview of how image uploading is done
+    1. before uploading files are checked for < 500K and jpeg format only 
+    2. get the name of the image $imageName1 = basename($_FILES["fileToUpload1"]["name"]); 
+    3. $target_file1 string is created to be "photos/$imageName1"
+    4. files are uploaded to photos directory using 'move_uploaded_file'
+    5. photos are resized using resize image if they exist
+    6. all values from form are inserted into db, using poster provided image names
+    7. now an item_id is created in the db for this record
+    8. the item_id is retreived and used to create a name for the image of format
+        'imageA10.jpg, imageB10.jpg, and imageC11.jpg' and the customer image names
+         in the photos directory are overwritten with these new names.  The customer
+         provided photo names inthe db are overwritten with the new format names.
+         I was concerned about having an easy way to tie together images in the photos 
+         directory with the record inthe db they belong to.  ***/
+
+ //     if ($_FILES["fileToUpload1"]["size"] > 500000) {
+  //      echo "I think the file is tooooo big";
+   //   }
+
+   //check each potential upload file for size < 500K and only jpg accepted
+   $photoErr1 = checkSizeType("fileToUpload1");
+   $photoErr2 = checkSizeType("fileToUpload2");
+   $photoErr2 = checkSizeType("fileToUpload3");
+
   
-      // list($width, $height, $type, $attr) = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+   // list($width, $height, $type, $attr) = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
    // printf("width is: %d height is :%d\n", $width, $height);
    //printf("type is : %s.\n", $type);
    //printf("attribute is : %s.\n", $attr);
@@ -101,6 +118,7 @@ if ($fail == 'true') {
 //rename them if they were named 'image.jpg',  better fix would be to to
 //change name if $imageName2 == $imageName1,  not expect name to be 'image.jpg'
    $imageName1 = basename($_FILES["fileToUpload1"]["name"]); //this is inserted into db
+   //check for "image.jpg" fix for ipad,iphone problem with image names always being image.jpg
    $imageName2 = basename($_FILES["fileToUpload2"]["name"]);
      if ($imageName2 == "image.jpg") {
      $imageName2 = "image2.jpg"; 
@@ -111,6 +129,7 @@ if ($fail == 'true') {
      $imageName3 = "image3.jpg"; 
     }
 
+
   $target_dir = "photos/";
   $target_file1 = $target_dir . $imageName1;
   $target_file2 = $target_dir . $imageName2;
@@ -118,7 +137,6 @@ if ($fail == 'true') {
 
    //$imageName is file name provided by the user: userfilename.jpg
    //$target_file file name provided by user with path added:  photos/userfilename.jpg
-
    move_uploaded_file($_FILES["fileToUpload1"]["tmp_name"], $target_file1);
    move_uploaded_file($_FILES["fileToUpload2"]["tmp_name"], $target_file2);
    move_uploaded_file($_FILES["fileToUpload3"]["tmp_name"], $target_file3);
@@ -133,9 +151,18 @@ if ($fail == 'true') {
     */
 } 
    if ($fail == "false") {
-    resizeImage(1000, 1000, $target_file1);
-    resizeImage(1000, 1000, $target_file2);
-    resizeImage(1000, 1000, $target_file3);
+
+// only go to resizeImage if file exists
+      if ($fileToUpload1 != "empty") {
+          resizeImage(1000, 1000, $target_file1);
+      }
+      if ($fileToUpload2 != "empty") {
+          resizeImage(1000, 1000, $target_file2);
+      }
+      if ($fileToUpload3 != "empty") {
+          resizeImage(1000, 1000, $target_file3);
+      }
+ 
 
   // This is where you would enter the posted fields into a database
     $tempKey = createRandom(10);
@@ -152,35 +179,42 @@ if ($fail == 'true') {
     $itemid = $row[0]; 
 /**** change photo name from user provided name to name of format imageA + idnum + .jpg **/
 /*** and rename the photo file that is in ../photos/  **************/
+// want to be able to clean out photo directory of photos no longer used, need naming convention
     if ($imageName1 != "") {
       $savetoA = "imageA$itemid.jpg";  //make new variable $saveto that is imageitemid.jpg,  ex image87.jpg
       rename("$target_file1", "photos/$savetoA");
+      queryMysql("UPDATE ItemsForSale SET salephoto = '$savetoA' WHERE itemid = $itemid");
+
       }
       else {
         $savetoA = "";
-        echo "imageName1 doesn't exist but is : $imageName1";
+     //   echo "imageName1 doesn't exist but is : $imageName1";
 
       }
       if ($imageName2 != "")  {
       $savetoB = "imageB$itemid.jpg";
       rename("$target_file2", "photos/$savetoB");
+      queryMysql("UPDATE ItemsForSale SET salephotoB = '$savetoB' WHERE itemid = $itemid");
+
       }
       else {
         $savetoB = "";
-        echo "imageName2 doesn't exist but is : $imageName2";
+  //      echo "imageName2 doesn't exist but is : $imageName2";
       }
       if ($imageName3 != "")  {
       $savetoC = "imageC$itemid.jpg";
       rename("$target_file3", "photos/$savetoC");
+      queryMysql("UPDATE ItemsForSale SET salephotoC = '$savetoC' WHERE itemid = $itemid");
+
       }
       else {
         $savetoC = "";
-        echo "imageName3 doesn't exist but is : $imageName3";
+  //      echo "imageName3 doesn't exist but is : $imageName3";
 
       }
 
-    //update record with image names using idnum format
-    queryMysql("UPDATE ItemsForSale SET salephoto = '$savetoA', salephotoB = '$savetoB', salephotoC = '$savetoC' WHERE itemid = $itemid");
+    
+//    queryMysql("UPDATE ItemsForSale SET salephoto = '$savetoA', salephotoB = '$savetoB', salephotoC = '$savetoC' WHERE itemid = $itemid");
 
 
     //TODO change header below to use itemid instead of $userKey, need to hide $userKey
@@ -251,7 +285,7 @@ if ($fail == 'true') {
                         <a href="postItem.php">Post Items</a>
                     </li>
                     <li>
-                        <a href="#">Contact</a>
+                      <a href="contact.php">Contact</a>
                     </li>
                 </ul>
             </div>

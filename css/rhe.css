@@ -42,11 +42,11 @@ div.img_location {
 }
 
 div.imgBig {
-    margin: 10px;
-    padding: 5px;
+    margin: 20px;
+    padding: 15px;
     border: 1px solid #0000ff;
     height: auto;
-    width: 400;
+    width: 600;
     height: 700;
     float: left;
     font-weight: normal;

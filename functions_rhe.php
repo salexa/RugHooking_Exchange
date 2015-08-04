@@ -106,13 +106,15 @@ function resizeImage($newW, $newH, $target_file) {
     }
  
 function checkSizeType($string2) {
+ // echo "got to checkSizeType";
     if ($_FILES["$string2"]["size"] > 500000) {
       global $fail; $fail= 'true';
-      echo "I am inside checkSizeType if";
+  //    echo "I am inside checkSizeType if";
       $photoErr = "photo must be less than 500KB";
-      echo "   inside function photoErr is : $photoErr";
+  //    echo "   inside function photoErr is : $photoErr";
       return $photoErr;
     }
+ //   echo "did not think file was > 500000";
     if ((!$fail) && ($_FILES["$string2"]["size"] > 0)) { //don't want to check file type if already rejected or 0
     $filetype = getimagesize($_FILES["$string2"]["tmp_name"]); 
         if (($filetype['mime']) != 'image/jpeg') {
