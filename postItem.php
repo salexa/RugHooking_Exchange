@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    //check each potential upload file for size < 500K and only jpg accepted
    $photoErr1 = checkSizeType("fileToUpload1");
    $photoErr2 = checkSizeType("fileToUpload2");
-   $photoErr2 = checkSizeType("fileToUpload3");
+   $photoErr3 = checkSizeType("fileToUpload3");
 
   
    // list($width, $height, $type, $attr) = getimagesize($_FILES["fileToUpload"]["tmp_name"]);

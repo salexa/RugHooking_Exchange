@@ -5,6 +5,12 @@ $dbuser  = 'sheryl';   // ...variables according
 $dbpass  = 'rhepassword';   // ...to your installation
 $appname = "Rug Hooking Exchange"; // ...and preference
 
+//$dbhost  = 'mysql.sherylsdemospace.com';    // Unlikely to require changing
+//$dbname  = 'rhedata';       // Modify these...
+//$dbuser  = 'salexa';   // ...variables according
+//$dbpass  = 'Iluv2_ftpRHE';   // ...to your installation
+//$appname = "Rug Hooking Exchange"; // ...and preference
+
 mysql_connect($dbhost, $dbuser, $dbpass) or die(mysql_error());
 mysql_select_db($dbname) or die(mysql_error());
 
@@ -109,12 +115,12 @@ function checkSizeType($string2) {
  // echo "got to checkSizeType";
     if ($_FILES["$string2"]["size"] > 500000) {
       global $fail; $fail= 'true';
-  //    echo "I am inside checkSizeType if";
+   //   echo "I am inside checkSizeType if";
       $photoErr = "photo must be less than 500KB";
-  //    echo "   inside function photoErr is : $photoErr";
+   //   echo "   inside function photoErr is : $photoErr";
       return $photoErr;
     }
- //   echo "did not think file was > 500000";
+   // echo "did not think file was > 500000";
     if ((!$fail) && ($_FILES["$string2"]["size"] > 0)) { //don't want to check file type if already rejected or 0
     $filetype = getimagesize($_FILES["$string2"]["tmp_name"]); 
         if (($filetype['mime']) != 'image/jpeg') {

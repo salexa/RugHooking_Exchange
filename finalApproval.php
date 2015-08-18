@@ -4,85 +4,22 @@ include_once 'functions_rhe.php';
 //******************** This executed after Submit ***********************************
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $currentCode = $_GET['code'];
-  $result = queryMysql("SELECT * FROM ItemsForSale WHERE userKey = '$currentCode';");
-  $row = mysql_fetch_row($result);
-  $itemEmail = $row[7];
   $selected_radio = $_POST['approve'];
-
    if ($selected_radio == 'Approve')
-   	{
-	echo "<br>";
-   	echo "Your posting has been approved.  You will recieve an email with in structions to finalize your posting";
-    echo "<br>";
-    echo "your secret code will be: ". $currentCode;
-    echo "<br>";
-    echo "Thank-you for using Rug Hooking Exchange.";
-    echo "<br>";
-    echo "Email will be sent to ". $itemEmail;
-    echo "<br>";
-//send email here to $currentCode@rughookingexchange.com
-
-    $link = "http://sherylsdemospace.com/RHE_BootStrap/finalApproval.php?code=" . $currentCode;
-    echo "link will be  ". $link;
-    echo "<br>";
-    $message = "The link below allows you to post and delete your listing." ."\n" .
-    "Click on the link, review and approve your listing. " . "\n" .
-    "Keep this email and when your item is sold use the link to delete the posting. " . "\n" .
-    "It may take up to 24  hours for your item to appear on the site. " . "\n" .
-    "Thank-you for using RugHooking Exchange" . "\n\n\n" .
-    $link;
-    
-    $to = "$itemEmail";
-    $subject = "Your RugHooking Exchange posting needs final approval";
- //   $txt = $reply . "\n" . $message;
-    $headers = "From: sheryl@sherylsdemospace.com" . "\r\n" .
-    "CC: sheryla3003@gmail.com";
-
-    mail($to,$subject,$message,$headers);
-//    $email_to = "alexander_sheryl@yahoo.com";
-//    $email_subject = "Test mail";
-//    $email_body = "Hello! This is a simple email message.";
-//    $from_email = "sheryl@sherylsdemospace.com";
-
-//    mail("alexander_sheryl@yahoo.com","very simple test",$currentCode);
-
-//if mail goes OK, update database status to email_sent
-//  if(mail($email_to, $currentCode, $email_body)){
-//        echo "The email($currentCode) was successfully sent.";
-//        queryMysql("UPDATE `ItemsForSale` SET `status` = 'email_sent' WHERE `userKey`= '$currentCode';");
-
-//    } else {
-//        echo "The email($email_subject) was NOT sent.";
+    //change value of status to 'approved' or 'delete'
+   	{ queryMysql("UPDATE `ItemsForSale` SET `status` = 'email_sent' WHERE `userKey`= '$currentCode';");
+      //echo "I think Approve was selected";
     }
-//
- //    }
-
-
-$to = "alexander_sheryl@yahoo.com";
-$subject = "Nonsensical Latin";
-
-// compose headers
-$headers = "From: sheryl@sherylsdemospace.com\r\n";
-$headers .= "Reply-To: sheryl@sherylsdemospace.com\r\n";
-$headers .= "X-Mailer: PHP/".phpversion();
-
-// compose message
-$message = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.";
-$message .= " Nam iaculis pede ac quam. Etiam placerat suscipit nulla.";
-$message .= " Maecenas id mauris eget tortor facilisis egestas.";
-$message .= " Praesent ac augue sed enim aliquam auctor. Ut dignissim ultricies est.";
-$message .= " Pellentesque convallis tempor tortor. Nullam nec purus.";
-$message = wordwrap($message, 70);
-
-// send email
-mail($to, $subject, $message, $headers);
-
-
-   if ($selected_radio == 'Delete')
-   {print "Your entry will be removed, Thank-you for using Rug Hooking Exchange.";
-    queryMysql("UPDATE `ItemsForSale` SET `status` = 'delete' WHERE `userKey`= '$currentCode';");
+   elseif ($selected_radio == 'Delete')
+   { queryMysql("UPDATE `ItemsForSale` SET `status` = 'delete' WHERE `userKey`= '$currentCode';");
+    //echo "I think Delete was selected";
     }
-   exit;
+    else 
+   { 
+   // echo "Problem, I did not think Approve or Delete were set";
+    }
+ header("Location: rughookingExchange.html");
+       exit;
 }
 
 //***************************** above executed after submit *********************************************
@@ -198,15 +135,14 @@ if ($category != 'wanted')
                 return false;"><img src="photos/<?php echo $itemPhoto3;?>"></a></div>
           <h5><?php echo "Location:.",$locationString, "....Date Posted: ",  $itemDateTime;?></h5>
           <h5><?php echo "<br>",$itemDescription;?></h5>
-          <h5>Contact Seller: <a href="mailto:pseudoemail@rughookingexchange.com">pseudoemail@RughookingExchange.com</a></div>
         </h5>
       </div>
 
 
               <div class="col-sm-4">
-               <p>To post this ad select approve below you will receive an email with further instructions.
-                To delete this posting select delete below and your posting will be deleted.<p>
-                <form Method ="Post" action="approval.php?code=<?php echo $currentCode; ?>">
+               <p>Select approve below your ad will be posted within 24 hours.
+                To reject or delete this posting select delete below and your posting will be deleted.<p>
+                <form Method ="Post" action="finalApproval.php?code=<?php echo $currentCode; ?>">
                   <label class="block"><input type="radio" name="approve" value="Approve" checked>   Approve </label>
                   <br>
                   <label class="block"><input type="radio" name="approve" value="Delete">   Delete </label>
