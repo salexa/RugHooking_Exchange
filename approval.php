@@ -4,8 +4,10 @@ include_once 'functions_rhe.php';
 //******************** This executed after Submit ***********************************
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $currentCode = $_GET['code'];
-  $result = queryMysql("SELECT * FROM ItemsForSale WHERE userKey = '$currentCode';");
-  $row = mysql_fetch_row($result);
+  $sql = "SELECT * FROM ItemsForSale WHERE userKey = '$currentCode'";
+  $result = mysqli_query($conn, $sql);
+  // old way $result = queryMysql("SELECT * FROM ItemsForSale WHERE userKey = '$currentCode';");
+  $row = mysqli_fetch_row($result);
   $itemEmail = $row[7];
   $selected_radio = $_POST['approve'];
 
@@ -49,7 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //if mail goes OK, update database status to email_sent
 //  if(mail($email_to, $currentCode, $email_body)){
 //        echo "The email($currentCode) was successfully sent.";
-//        queryMysql("UPDATE `ItemsForSale` SET `status` = 'email_sent' WHERE `userKey`= '$currentCode';");
+  //   $sql = "UPDATE `ItemsForSale` SET `status` = 'email_sent' WHERE `userKey`= '$currentCode'";
+  //   $result = mysqli_query($conn, $sql);
+//    old way    queryMysql("UPDATE `ItemsForSale` SET `status` = 'email_sent' WHERE `userKey`= '$currentCode';");
 
 //    } else {
 //        echo "The email($email_subject) was NOT sent.";
@@ -80,7 +84,9 @@ mail($to, $subject, $message, $headers);
 
    if ($selected_radio == 'Delete')
    {print "Your entry will be removed, Thank-you for using Rug Hooking Exchange.";
-    queryMysql("UPDATE `ItemsForSale` SET `status` = 'delete' WHERE `userKey`= '$currentCode';");
+    $sql = "UPDATE `ItemsForSale` SET `status` = 'delete' WHERE `userKey`= '$currentCode'";
+    $result = mysqli_query($conn, $sql);
+    // old way queryMysql("UPDATE `ItemsForSale` SET `status` = 'delete' WHERE `userKey`= '$currentCode';");
     }
    exit;
 }
@@ -89,8 +95,10 @@ mail($to, $subject, $message, $headers);
 //***** first part of this section should be the same as Generic_item.php **********************
 $currentCode = $_GET['code'];
 printf("currentCode is :%s\n", $currentCode);
-$result = queryMysql("SELECT * FROM ItemsForSale WHERE userKey = '$currentCode';");
-$row = mysql_fetch_row($result);
+$sql = "SELECT * FROM ItemsForSale WHERE userKey = '$currentCode'";
+$result = mysqli_query($conn, $sql);
+// old way $result = queryMysql("SELECT * FROM ItemsForSale WHERE userKey = '$currentCode';");
+$row = mysqli_fetch_row($result);
 
 //variables created for readability in html
 //variables created for readability in html

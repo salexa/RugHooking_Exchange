@@ -7,11 +7,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $selected_radio = $_POST['approve'];
    if ($selected_radio == 'Approve')
     //change value of status to 'approved' or 'delete'
-   	{ queryMysql("UPDATE `ItemsForSale` SET `status` = 'email_sent' WHERE `userKey`= '$currentCode';");
+   	{ 
+      $sql = "UPDATE `ItemsForSale` SET `status` = 'approved' WHERE `userKey`= '$currentCode'";
+      // old way queryMysql("UPDATE `ItemsForSale` SET `status` = 'approved' WHERE `userKey`= '$currentCode';");
+      mysqli_query($conn, $sql);
       //echo "I think Approve was selected";
     }
    elseif ($selected_radio == 'Delete')
-   { queryMysql("UPDATE `ItemsForSale` SET `status` = 'delete' WHERE `userKey`= '$currentCode';");
+   { 
+      $sql = "UPDATE `ItemsForSale` SET `status` = 'delete' WHERE `userKey`= '$currentCode'";
+      // old wayqueryMysql("UPDATE `ItemsForSale` SET `status` = 'delete' WHERE `userKey`= '$currentCode';");
+      mysqli_query($conn, $sql);
     //echo "I think Delete was selected";
     }
     else 
@@ -26,8 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //***** first part of this section should be the same as Generic_item.php **********************
 $currentCode = $_GET['code'];
 printf("currentCode is :%s\n", $currentCode);
-$result = queryMysql("SELECT * FROM ItemsForSale WHERE userKey = '$currentCode';");
-$row = mysql_fetch_row($result);
+$sql = "SELECT * FROM ItemsForSale WHERE userKey = '$currentCode'";
+$result = mysqli_query($conn, $sql);
+// old way $result = queryMysql("SELECT * FROM ItemsForSale WHERE userKey = '$currentCode';");
+$row = mysqli_fetch_row($result);
+
 
 //variables created for readability in html
 //variables created for readability in html

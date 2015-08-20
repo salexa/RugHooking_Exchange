@@ -1,5 +1,6 @@
 <?php
 include_once 'functions_rhe.php';
+
 // define variables and set to empty values
 $nameErr = $emailErr = $categoryErr = "";
 //$itemname = $email = $category = "";
@@ -169,13 +170,24 @@ if ($fail == 'true') {
     $userKey = test_input($tempKey);
     //printf("UserKey is : %s.\n", $userKey);
     //status field defaults to "waiting"
-    queryMysql("INSERT INTO ItemsForSale (itemname, description, price, city, state, category, 
-      useremail, salephoto, salephotoB, salephotoC, userKey) VALUES ('$itemname', '$description', '$price', '$city', '$state', 
-      '$category', '$email', '$imageName1', '$imageName2', '$imageName3', '$userKey')");
+    //$sql = "INSERT INTO ItemsForSale (itemname) VALUES ('$itemname')";
+
+  $sql = "INSERT INTO ItemsForSale (itemname, description, price, city, state, category, 
+     useremail, salephoto, salephotoB, salephotoC, userKey) VALUES ('$itemname', '$description', '$price', '$city', '$state', 
+      '$category', '$email', '$imageName1', '$imageName2', '$imageName3', '$userKey')";  
+
+      mysqli_query($conn, $sql);
+
+    // old way  queryMysql("INSERT INTO ItemsForSale (itemname, description, price, city, state, category, 
+    //  useremail, salephoto, salephotoB, salephotoC, userKey) VALUES ('$itemname', '$description', '$price', '$city', '$state', 
+    //  '$category', '$email', '$imageName1', '$imageName2', '$imageName3', '$userKey')");
     //need to get itemid to make image name with format itemid.jpg (itemid not available until INSERT done)
     //use the $userKey to get the itemid that was created when record was inserted
-    $result =  queryMysql("SELECT `itemid` FROM `ItemsForSale` WHERE `userKey` = '$userKey'");
-    $row = mysql_fetch_row($result);
+
+    $sql = "SELECT `itemid` FROM `ItemsForSale` WHERE `userKey` = '$userKey'";
+    $result = mysqli_query($conn, $sql);
+    // old way $result =  queryMysql("SELECT `itemid` FROM `ItemsForSale` WHERE `userKey` = '$userKey'");
+    $row = mysqli_fetch_row($result);
     $itemid = $row[0]; 
 /**** change photo name from user provided name to name of format imageA + idnum + .jpg **/
 /*** and rename the photo file that is in ../photos/  **************/
@@ -183,7 +195,9 @@ if ($fail == 'true') {
     if ($imageName1 != "") {
       $savetoA = "imageA$itemid.jpg";  //make new variable $saveto that is imageitemid.jpg,  ex image87.jpg
       rename("$target_file1", "photos/$savetoA");
-      queryMysql("UPDATE ItemsForSale SET salephoto = '$savetoA' WHERE itemid = $itemid");
+      $sql = "UPDATE ItemsForSale SET salephoto = '$savetoA' WHERE itemid = $itemid";
+      $result = mysqli_query($conn, $sql);
+      // old way queryMysql("UPDATE ItemsForSale SET salephoto = '$savetoA' WHERE itemid = $itemid");
 
       }
       else {
@@ -194,7 +208,9 @@ if ($fail == 'true') {
       if ($imageName2 != "")  {
       $savetoB = "imageB$itemid.jpg";
       rename("$target_file2", "photos/$savetoB");
-      queryMysql("UPDATE ItemsForSale SET salephotoB = '$savetoB' WHERE itemid = $itemid");
+      $sql = "UPDATE ItemsForSale SET salephotoB = '$savetoB' WHERE itemid = $itemid";
+      $result = mysqli_query($conn, $sql);
+      // old way queryMysql("UPDATE ItemsForSale SET salephotoB = '$savetoB' WHERE itemid = $itemid");
 
       }
       else {
@@ -204,7 +220,9 @@ if ($fail == 'true') {
       if ($imageName3 != "")  {
       $savetoC = "imageC$itemid.jpg";
       rename("$target_file3", "photos/$savetoC");
-      queryMysql("UPDATE ItemsForSale SET salephotoC = '$savetoC' WHERE itemid = $itemid");
+      $sql = "UPDATE ItemsForSale SET salephotoC = '$savetoC' WHERE itemid = $itemid";
+      $result = mysqli_query($conn, $sql);
+      // old way queryMysql("UPDATE ItemsForSale SET salephotoC = '$savetoC' WHERE itemid = $itemid");
 
       }
       else {
@@ -214,9 +232,6 @@ if ($fail == 'true') {
       }
 
     
-//    queryMysql("UPDATE ItemsForSale SET salephoto = '$savetoA', salephotoB = '$savetoB', salephotoC = '$savetoC' WHERE itemid = $itemid");
-
-
     //TODO change header below to use itemid instead of $userKey, need to hide $userKey
     //$result = queryMysql("SELECT * FROM ItemsForSale WHERE itemid = '$userKey'");
     //$row = mysql_fetch_row($result);

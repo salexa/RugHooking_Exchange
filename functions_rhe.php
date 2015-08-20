@@ -1,18 +1,24 @@
 <?php // Example 21-1: functions.php
-$dbhost  = 'localhost';    // Unlikely to require changing
-$dbname  = 'rhedata';       // Modify these...
-$dbuser  = 'sheryl';   // ...variables according
-$dbpass  = 'rhepassword';   // ...to your installation
-$appname = "Rug Hooking Exchange"; // ...and preference
-
-//$dbhost  = 'mysql.sherylsdemospace.com';    // Unlikely to require changing
+//$dbhost  = 'localhost';    // Unlikely to require changing
 //$dbname  = 'rhedata';       // Modify these...
-//$dbuser  = 'salexa';   // ...variables according
-//$dbpass  = 'Iluv2_ftpRHE';   // ...to your installation
+//$dbuser  = 'sheryl';   // ...variables according
+//$dbpass  = 'rhepassword';   // ...to your installation
 //$appname = "Rug Hooking Exchange"; // ...and preference
 
-mysql_connect($dbhost, $dbuser, $dbpass) or die(mysql_error());
-mysql_select_db($dbname) or die(mysql_error());
+$dbhost  = 'mysql.sherylsdemospace.com';    // Unlikely to require changing
+$dbname  = 'rhedata';       // Modify these...
+$dbuser  = 'salexa';   // ...variables according
+$dbpass  = 'Iluv2_ftpRHE';   // ...to your installation
+$appname = "Rug Hooking Exchange"; // ...and preference
+
+
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die(mysql_error());
+if ($conn->connect_error) {
+  echo "connection failed";
+    die("Connection failed: " . $conn->connect_error);
+} 
+//mysqli_select_db($dbname) or die(mysql_error());
+
 
 function createTable($name, $query)
 {
@@ -22,9 +28,10 @@ function createTable($name, $query)
 
 function queryMysql($query)
 {
-    $result = mysql_query($query) or die(mysql_error());
+        echo "queryMysql called</br>";
+    $result = mysqli_query($conn, $query);
+       echo "queryMysql called, after $result =</br>";
 	 return $result;
-   //  echo "queryMysql called";
 }
 
 function formatdate($rawdatetime)

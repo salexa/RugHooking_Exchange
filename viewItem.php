@@ -2,8 +2,11 @@
 include_once 'functions_rhe.php';
 $currentid = $_GET['cur_id'];
 //restrict to posted items to keep people from viewing hidden items by editing id in browser field
-$result = queryMysql("SELECT * FROM ItemsForSale WHERE itemid = $currentid AND status = 'posted'");
-$row = mysql_fetch_row($result);
+$sql = "SELECT * FROM ItemsForSale WHERE itemid = $currentid AND status = 'posted'";
+//$result = queryMysql("SELECT * FROM ItemsForSale WHERE itemid = $currentid AND status = 'posted'");
+$result = mysqli_query($conn, $sql);
+
+$row = mysqli_fetch_row($result);
 //variables created for readability in html
 $itemDateTime = formatdate($row[6]);
 $category = $row[8];

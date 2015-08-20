@@ -76,13 +76,20 @@
 
  <?php 
 include_once 'functions_rhe.php';
-    
 echo "<div id='content' class='container'>";  
 //echo "<h3>Browse Rug Hooking Items</h3>";  
-   
-$result = queryMysql("SELECT * FROM ItemsForSale WHERE status = 'posted' ORDER BY `postdate` DESC");
-        $row_cnt = mysql_num_rows($result);
+
+//$result = queryMysql("SELECT * FROM ItemsForSale WHERE status = 'posted' ORDER BY `postdate` DESC");
+
+$sql = "SELECT * FROM ItemsForSale WHERE status = 'posted' ORDER BY `postdate` DESC";  
+
+//$result = queryMysql($sql);
+$result = mysqli_query($conn, $sql);
+
+        $row_cnt = mysqli_num_rows($result);
         printf("Result set has %d rows.\n", $row_cnt);
+
+
 //variables created for readability in html
 $itemDateTime = formatdate($row[6]);
 $category = $row[8];
@@ -95,7 +102,7 @@ echo"<br></br>";
 //need to add container row every 4th item
 echo '<div class="row"></div>';
 $item = 0;
-while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
+while ($row = mysqli_fetch_array($result, MYSQL_NUM)) {
    // printf("itemid %s  itemname: %s what: %s", $row[0], $row[1], $row[9]); 
     $item = $item + 1;
     if ($item % 4 == 0) {
