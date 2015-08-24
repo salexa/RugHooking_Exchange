@@ -76,8 +76,6 @@
 
  <?php 
 include_once 'functions_rhe.php';
-echo "<div id='content' class='container'>";  
-//echo "<h3>Browse Rug Hooking Items</h3>";  
 
 //$result = queryMysql("SELECT * FROM ItemsForSale WHERE status = 'posted' ORDER BY `postdate` DESC");
 
@@ -110,7 +108,9 @@ while ($row = mysqli_fetch_array($result, MYSQL_NUM)) {
             }  
     $temp = formatdate($row[6]);
     echo "<div class = 'col-xs-6 col-sm-3 portfolio-item'>";
-    echo "<a href='viewItem.php?cur_id=$row[0]'> <img class='img-responsive' src = 'photos/$row[9]' ></a>";
+ //   echo "<a href='viewItem.php?cur_id=$row[0]'> <img class='img-responsive' src = 'photos/$row[9]' ></a>";
+    echo "<a href='viewItem.php?cur_id=$row[0]'> <img class='img-responsive' src = 'photos/imageA19.jpg' ></a>";
+
     if ($row[8] == 'wanted')  
      {$dispString = "    (Wanted)";}  //want to display wanted for item category wanted
     if ($row[8] == 'equipment')

@@ -13,20 +13,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
    if ($selected_radio == 'Approve')
    	{
-	echo "<br>";
-   	echo "Your posting has been approved.  You will recieve an email with in structions to finalize your posting";
-    echo "<br>";
-    echo "your secret code will be: ". $currentCode;
-    echo "<br>";
-    echo "Thank-you for using Rug Hooking Exchange.";
-    echo "<br>";
-    echo "Email will be sent to ". $itemEmail;
-    echo "<br>";
+//	echo "<br>";
+//   	echo "Your posting has been approved.  You will recieve an email with in structions to finalize your posting";
+//   echo "<br>";
+//   echo "your secret code will be: ". $currentCode;
+//    echo "<br>";
+//    echo "Thank-you for using Rug Hooking Exchange.";
+//    echo "<br>";
+//    echo "Email will be sent to ". $itemEmail;
+//   echo "<br>";
 //send email here to $currentCode@rughookingexchange.com
 
     $link = "http://sherylsdemospace.com/RHE_BootStrap/finalApproval.php?code=" . $currentCode;
-    echo "link will be  ". $link;
-    echo "<br>";
+ //   echo "link will be  ". $link;
+ //   echo "<br>";
     $message = "The link below allows you to post and delete your listing." ."\n" .
     "Click on the link, review and approve your listing. " . "\n" .
     "Keep this email and when your item is sold use the link to delete the posting. " . "\n" .
@@ -40,46 +40,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $headers = "From: sheryl@sherylsdemospace.com" . "\r\n" .
     "CC: sheryla3003@gmail.com";
 
-    mail($to,$subject,$message,$headers);
-//    $email_to = "alexander_sheryl@yahoo.com";
-//    $email_subject = "Test mail";
-//    $email_body = "Hello! This is a simple email message.";
-//    $from_email = "sheryl@sherylsdemospace.com";
-
-//    mail("alexander_sheryl@yahoo.com","very simple test",$currentCode);
-
-//if mail goes OK, update database status to email_sent
-//  if(mail($email_to, $currentCode, $email_body)){
-//        echo "The email($currentCode) was successfully sent.";
-  //   $sql = "UPDATE `ItemsForSale` SET `status` = 'email_sent' WHERE `userKey`= '$currentCode'";
-  //   $result = mysqli_query($conn, $sql);
-//    old way    queryMysql("UPDATE `ItemsForSale` SET `status` = 'email_sent' WHERE `userKey`= '$currentCode';");
-
-//    } else {
-//        echo "The email($email_subject) was NOT sent.";
+  //  mail($to,$subject,$message,$headers);
+        if (mail($to,$subject,$message,$headers)) {
+          $sql = "UPDATE `ItemsForSale` SET `status` = 'email_sent' WHERE `userKey`= '$currentCode'";
+          $result = mysqli_query($conn, $sql);
+        }
+        } else {
+          echo "The email($email_subject) was NOT sent.";
     }
-//
- //    }
 
 
-$to = "alexander_sheryl@yahoo.com";
-$subject = "Nonsensical Latin";
+
+//$to = "alexander_sheryl@yahoo.com";
+//$subject = "Nonsensical Latin";
 
 // compose headers
-$headers = "From: sheryl@sherylsdemospace.com\r\n";
-$headers .= "Reply-To: sheryl@sherylsdemospace.com\r\n";
-$headers .= "X-Mailer: PHP/".phpversion();
+//$headers = "From: sheryl@sherylsdemospace.com\r\n";
+//$headers .= "Reply-To: sheryl@sherylsdemospace.com\r\n";
+//$headers .= "X-Mailer: PHP/".phpversion();
 
 // compose message
-$message = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.";
-$message .= " Nam iaculis pede ac quam. Etiam placerat suscipit nulla.";
-$message .= " Maecenas id mauris eget tortor facilisis egestas.";
-$message .= " Praesent ac augue sed enim aliquam auctor. Ut dignissim ultricies est.";
-$message .= " Pellentesque convallis tempor tortor. Nullam nec purus.";
-$message = wordwrap($message, 70);
+//$message = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.";
+//$message .= " Nam iaculis pede ac quam. Etiam placerat suscipit nulla.";
+//$message .= " Maecenas id mauris eget tortor facilisis egestas.";
+//$message .= " Praesent ac augue sed enim aliquam auctor. Ut dignissim ultricies est.";
+//$message .= " Pellentesque convallis tempor tortor. Nullam nec purus.";
+//$message = wordwrap($message, 70);
 
 // send email
-mail($to, $subject, $message, $headers);
+//mail($to, $subject, $message, $headers);
 
 
    if ($selected_radio == 'Delete')
@@ -88,6 +77,8 @@ mail($to, $subject, $message, $headers);
     $result = mysqli_query($conn, $sql);
     // old way queryMysql("UPDATE `ItemsForSale` SET `status` = 'delete' WHERE `userKey`= '$currentCode';");
     }
+   //exit;
+   header("Location: rughookingExchange.html");
    exit;
 }
 

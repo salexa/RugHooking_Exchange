@@ -1,16 +1,15 @@
 <?php // Example 21-1: functions.php
-//$dbhost  = 'localhost';    // Unlikely to require changing
-//$dbname  = 'rhedata';       // Modify these...
-//$dbuser  = 'sheryl';   // ...variables according
-//$dbpass  = 'rhepassword';   // ...to your installation
-//$appname = "Rug Hooking Exchange"; // ...and preference
-
-$dbhost  = 'mysql.sherylsdemospace.com';    // Unlikely to require changing
+$dbhost  = 'localhost';    // Unlikely to require changing
 $dbname  = 'rhedata';       // Modify these...
-$dbuser  = 'salexa';   // ...variables according
-$dbpass  = 'Iluv2_ftpRHE';   // ...to your installation
+$dbuser  = 'sheryl';   // ...variables according
+$dbpass  = 'rhepassword';   // ...to your installation
 $appname = "Rug Hooking Exchange"; // ...and preference
 
+//$dbhost  = 'mysql.sherylsdemospace.com';    // Unlikely to require changing
+//$dbname  = 'rhedata';       // Modify these...
+//$dbuser  = 'salexa';   // ...variables according
+//$dbpass  = 'Iluv2_ftpRHE';   // ...to your installation
+//$appname = "Rug Hooking Exchange"; // ...and preference
 
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die(mysql_error());
 if ($conn->connect_error) {
@@ -18,7 +17,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } 
 //mysqli_select_db($dbname) or die(mysql_error());
-
 
 function createTable($name, $query)
 {
