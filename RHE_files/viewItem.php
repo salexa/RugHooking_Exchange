@@ -70,8 +70,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $headers = "From: sheryl@rughookingExchange.com";
     mail($to,$subject,$txt,$headers);
 
-//send them back to browseImage.php
- header("Location: browseItem.php");
+//thank you message sent via alert.php page
+
+    header("Location: alert.php?alertText='thanks'");
+
  exit;
 
 
@@ -97,10 +99,20 @@ $row = mysqli_fetch_row($result);
 $itemDateTime = formatdate($row[6]);
 $category = $row[8];
 $locationString = $row[4].", ".$row[5];  //city, state
+$vendor = $row[14];
+$vendorlink = $row[15];
 $itemPhoto1 = $row[9];
+if ($itemPhoto1 == '') {
+    $itemPhoto1 = "noImage.jpg";
+}
 $itemPhoto2 = $row[10];
+if ($itemPhoto2 == '') {
+    $itemPhoto2 = "noImage.jpg";
+}
 $itemPhoto3 = $row[11];
-
+if ($itemPhoto3 == '') {
+    $itemPhoto3 = "noImage.jpg";
+}
 $itemTitle = $row[1];
 $itemPrice = $row[3];
 $itemDescription = $row[2];
@@ -165,7 +177,7 @@ if ($category != 'wanted')
     <div id='content' class='container'>
 		<div class="imgBig">
 			<h3 class="text-center"><?php echo $titleString;?></h3>
-			<h3 class="text-center">Price: <?php echo $itemPrice;?></h3>
+			<h4 class="text-center">Price: <?php echo $itemPrice;?></h4>
 		    <img id="main" src="photos/<?php echo $itemPhoto1;?>">
             <div class="thumbCenter">
 		    <div class="thumb"><a href="photos/<?php echo $itemPhoto1;?>" onclick="swap(this);
@@ -174,14 +186,18 @@ if ($category != 'wanted')
 		            return false;"><img src="photos/<?php echo $itemPhoto2;?>"></a></div>
 		    <div class="thumb"><a href="photos/<?php echo $itemPhoto3;?>" onclick="swap(this);
 		            return false;"><img src="photos/<?php echo $itemPhoto3;?>"></a></div>
-            </div> <!--thumbCenter -->
-		    <h5><?php echo "Location:.",$locationString, "....Date Posted: ",  $itemDateTime;?></h5>
+      <!--      </div> thumbCenter -->
+		    <h5>Location: <small><?php echo $locationString?></small></h5>
+            <?php if (($vendor == 'Yes') && ($vendorlink != 'Empty')){
+                    echo "<p>Visit our site : <a href='http://www.$vendorlink/'>$vendorlink</a> </p>";
+                         } ?>
+            <h5>Date Posted: <small><?php echo $itemDateTime ,"  CST";?></small></h5>
 		    <h5><?php echo "<br>",$itemDescription;?></h5>
+            </div> <!--thumbCenter -->
         </div>
     </div>
 </div>
-<div class = "col-md-6">
-
+    <div class = "col-md-6">
     <div id='content' class='container'> 
     <div id='inquireForm'>
       <h3>Contact Seller</h3>

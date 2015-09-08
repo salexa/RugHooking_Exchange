@@ -18,6 +18,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    } else {
      $category = test_input($_POST["category"]);
    }
+   if (empty($_POST["vendor"])) {
+     $vendor = "";
+   } else {
+     $vendor = test_input($_POST["vendor"]);
+   }
+   if (empty($_POST["vendorlink"])) {
+     $vendorlink = "";
+   } else {
+     $vendorlink = test_input($_POST["vendorlink"]);
+   }
+
    if (empty($_POST["description"])) {
      $descriptionErr = "Description is required";
      $fail = 'true';
@@ -177,8 +188,8 @@ if ($fail == 'true') {
     //$sql = "INSERT INTO ItemsForSale (itemname) VALUES ('$itemname')";
 
   $sql = "INSERT INTO ItemsForSale (itemname, description, price, city, state, category, 
-     useremail, salephoto, salephotoB, salephotoC, userKey) VALUES ('$itemname', '$description', '$price', '$city', '$state', 
-      '$category', '$email', '$imageName1', '$imageName2', '$imageName3', '$userKey')";  
+     useremail, salephoto, salephotoB, salephotoC, userKey, vendor, vendorlink) VALUES ('$itemname', '$description', '$price', '$city', '$state', 
+      '$category', '$email', '$imageName1', '$imageName2', '$imageName3', '$userKey', '$vendor', '$vendorlink')";  
 
       mysqli_query($conn, $sql);
 
@@ -241,7 +252,7 @@ if ($fail == 'true') {
     //$result = queryMysql("SELECT * FROM ItemsForSale WHERE itemid = '$userKey'");
     //$row = mysql_fetch_row($result);
     //$itemid = $row[0];
-     header("Location: approval.php?code=$userKey");
+     header("Location: approval.php?code=$itemid");
        exit;
        }
 }
@@ -257,7 +268,7 @@ if ($fail == 'true') {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Rug Hooking Exchange View Item</title>
+    <title>Rug Hooking Exchange Post Item</title>
 
 
     <script src="js/jquery.js"></script>
@@ -308,6 +319,14 @@ if ($fail == 'true') {
         <option value="supplies">Supplies</option>
         <option value="wanted">Wanted</option>
         </select>
+        <br><br>
+        Are you a vendor?: <select name="vendor" value="$vendor">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+        </select>
+        <br><br>
+        (For Vendors) Enter link to your vendor site:<br>
+         <input type="text" value="<?php echo $vendorlink;?>" name="vendorlink">
         <br><br>
         Description:
         <br>
@@ -380,7 +399,8 @@ if ($fail == 'true') {
         <option value="WY">Wyoming</option>
         </select>
         <br></br>
-        You can upload up to three images, images are not required
+        You can upload up to three images, images are not required.<br>
+        <span class="error">NOTE: Images must not be larger than 500KB.</span>  
         <br></br>
         Select image to upload:
         <input type="file" name="fileToUpload1" id="fileToUpload1">
@@ -393,9 +413,9 @@ if ($fail == 'true') {
         <br></br>
         <input type="submit" name="submit" value="Submit">
         <br><br>
-        *When you press 'submit', your ad will be displayed for your<br>
-        approval.  If you approve you will be sent an email with </br>
-        instructions to finalize your posting.<br>
+        <b>When you press 'submit', your ad will be displayed for your<br>
+        approval.  If you approve the posting you receive an email with </br>
+        instructions to finalize your posting.</b><br>
       </form>
     </div> <!--  postform  -->
 
@@ -404,27 +424,35 @@ if ($fail == 'true') {
     <div id="postformInstr">
       <h2> Instructions </h2><br>
       1. Enter item name<br>
+      <br>
       2. Select category<br>
+      <br>
       3. Enter a detailed description of the item.  You might want to inlude
       information such as condition, weight, perferred shipping method, shipping cost
       (if you know it), payment methods.  Anything entered here will be displayed,
       do not enter any personal information (address, phone number, etc.) unless
-      you want it displayed in your ad.<br>
-      4. Enter the price with $ in front, or negotionable, best offer, etc. If you are
+      you want it displayed in the  posting.<br>
+      <br>
+      4. Enter the price with $ in front, or negotiable, best offer, etc. If you are
       posting in the wanted category, you can leave price blank<br>
-      5. Your email, this will not be displayed.  A pseudo-email will be displayed and
-      any email sent to this pseudo email will be forwarded to the email you enter in 
-      this field.<br>
+      <br>
+      5. Enter the email address where you want the buyers to contact you.  
+      <b>To protect your privacy, your email will not be displayed
+      in the posting.</b>  Potential buyers will fillout a form with their
+      contact information and message and an email will be sent to you
+      with the buyers information.<br>
+      <br>
       6. The city where the item is located.<br>
+      <br>
       7. The state where the item is located.<br>
-      8. Browse your computer for a photo of the item.  The file size must be < 500KB
-      and only jpeg images are accepted.  You do not have to upload a photo, but if you
-      are selling an item a good photo is very important.<br>
+      <br>
+      8. Browse your computer for a photo of the item.  The file size must
+      be less than 500KB and only jpeg images are accepted.  You do not have
+      to upload a photo, but if you are selling an item a good photo is very important.<br>
     </div>
     </div> <!--  "col-lg-6"  -->
     </div> <!--  row  -->
   <div id="footer" class="container">
-      <p>For questions, comments, suggestions contact <a href="mailto:sheryl@rughookingexchange.com">Sheryl@RughookingExchange.com</a></p>
   </div>
 
 </body></html>

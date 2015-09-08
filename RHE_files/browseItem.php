@@ -59,43 +59,50 @@ $result = mysqli_query($conn, $sql);
         $row_cnt = mysqli_num_rows($result);
        // printf("Result set has %d rows.\n", $row_cnt);
 
-
-//variables created for readability in html
-$itemDateTime = formatdate($row[6]);
-$category = $row[8];
-$locationString = $row[4].", ".$row[5];  //city, state
-$itemPhoto = $row[9];
-$itemTitle = $row[1];
-$itemPrice = $row[3];
-$itemDescription = $row[2];      
 echo"<br></br>"; 
 //need to add container row every 4th item
 echo '<div class="row"></div>';
 $item = 0;
 while ($row = mysqli_fetch_array($result, MYSQL_NUM)) {
+    $itemDateTime = formatdate($row[6]);
+    $category = $row[8];
+    $locationString = $row[4].", ".$row[5];  //city, state
+    $itemPhoto = $row[9];
+    if ($itemPhoto == '') {
+        $itemPhoto = "noImage.jpg";
+    }
+    $itemTitle = $row[1];
+    $itemPrice = $row[3];
+    $itemDescription = $row[2]; 
+    $userKey = $row[13];
+    $vendor = $row[14];
+    $vendorlink = $row[15];
+
     //printf("itemid %s  itemname: %s what: %s", $row[0], $row[1], $row[9]); 
-    $item = $item + 1;
     if ($item % 4 == 0) {
+       // printf("if mod 4 is true item is" . $item); 
         echo '<div class="row">';
             }  
+    $item = $item + 1;
     $temp = formatdate($row[6]);
     echo "<div class = 'col-xs-6 col-sm-3 portfolio-item'>";
-    echo "<a href='viewItem.php?cur_id=$row[0]'> <img class='img-responsive' src = 'photos/$row[9]' ></a>";
+    echo "<a href='viewItem.php?cur_id=$row[0]'> <img class='img-responsive' src = 'photos/$itemPhoto' ></a>";
 
-    if ($row[8] == 'wanted')  
-     {$dispString = "    (Wanted)";}  //want to display wanted for item category wanted
-    if ($row[8] == 'equipment')
-        {$dispString = $row[3];} //want to display price for items that should price
-    echo "<h4> $row[1]</h4>";
-    echo "<h4> $dispString</h4>";
-
-    echo "<p> Location: $row[4],$row[5]</p>";
-    echo "<p> Date Posted: $temp</p>";
-
+    if ($category == 'wanted')  
+     {$dispString = "    (Wanted)";}  //want to display wanted instead of price for item category wanted
+    else
+        {$dispString = $itemPrice;} //want to display price for items that should price
+    echo "<h4> $itemTitle</h4>";
+    echo "<h5> $dispString</h5>";
+    if (($vendor == 'Yes') && ($vendorlink != 'Empty')){
+        echo "<p>Visit our site : <a href='http://www.$vendorlink/'>$vendorlink</a> </p>";
+    }
+    echo "<p> Location: $locationString</p>";
+    echo "<p> Date Posted: $itemDateTime   CST</p>";
 
    /* echo "<div class='item_desc'> category: $row[8]</div>"; */
     echo "</div>";
-    if ($item % 4 == 0) {  //need to put in closing div for class = "row", needed for BootStrap
+    if (($item % 4 == 0) && ($item != 0)) {  //need to put in closing div for class = "row", needed for BootStrap
         echo '</div>';
             }  
 }
