@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    {$sql = "UPDATE `ItemsForSale` SET `status` = 'delete' WHERE `userKey`= '$userKey'";
     $result = mysqli_query($conn, $sql);
     // old way queryMysql("UPDATE `ItemsForSale` SET `status` = 'delete' WHERE `userKey`= '$userKey';");
-    //Delete message sent via alert.php page
+    //message sent via alert.php page
     header("Location: alert.php?alertText='approvalDeleted'");
     exit;
     }

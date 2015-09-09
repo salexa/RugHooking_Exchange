@@ -101,7 +101,7 @@ div.contactSeller{
  /*   border: 1px solid #000; */
     margin: 5px;
     width: 100px;
-    height: 100px;
+    height: auto;
 }
 
 .thumbCenter{
@@ -132,7 +132,8 @@ div.thumb img {
     height: auto;
     padding-top: 50px;
     padding-left: 50px;
-    border: 2px solid yellow;
+    margin-left: 50px;
+    /* border: 2px solid yellow; */
     background: #EEEEEE;
     float: left;
   }
@@ -170,7 +171,7 @@ div.thumb img {
     height: auto;
     padding-top: 50px;
     padding-left: 50px;
-    border: 2px solid yellow;
+    /* border: 2px solid yellow; */
     float: left;
     font-size: 10pt;
     line-height:150%;

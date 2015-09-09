@@ -30,11 +30,11 @@
                     "<li class='dropdown'>" .
                         "<a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Instructions<span class='caret'></span></a>"  .
                   "<ul class='dropdown-menu'>" . 
-                    "<li><a href='#'>How to Post an Item</a></li>" .
-                    "<li><a href='#'>How to Purchase an Item</a></li>" .
-                    "<li><a href='#'>FAQs</a></li>" .
+                    "<li><a href='#'>How to Post an Item (under construction)</a></li>" .
+                    "<li><a href='#'>How to Purchase an Item (under construction)</a></li>" .
+                    "<li><a href='#'>FAQs (under construction)</a></li>" .
                     "<li role='separator' class='divider'></li>" .
-                    "<li><a href='#'>Separated link</a></li>" .
+                    "<li><a href='#'>Separated link (under construction)</a></li>" .
                   "</ul>" .
                     "</li> <!-- dropdown --> " .
             "</ul>  <!-- /.navbar-right --> " .

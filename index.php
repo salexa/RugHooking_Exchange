@@ -43,13 +43,13 @@
           </ol>
           <div class="carousel-inner">
             <div class="item active">
-              <img src="RHE_files/carouselImages/mondrian2rows1200x500.jpg" style="width:100%" class="img-responsive">
+              <img src="RHE_files/carouselImages/newcomposite.jpg" style="width:100%" class="img-responsive">
             </div>
             <div class="item">
               <img src="RHE_files/carouselImages/woolStack1200x500.jpg" style="width:100%" class="img-responsive">
             </div>
             <div class="item">
-              <img src= "RHE_files/carouselImages/blue1200x500.jpg" style="width:100%" class="img-responsive">     
+              <img src= "RHE_files/carouselImages/mondrian2rows1200x500.jpg" style="width:100%" class="img-responsive">     
             </div>
           </div>
           <!-- Controls -->
@@ -73,7 +73,7 @@
                 </p>
             </div>
         <!-- /words below carousel -->
-
+ <!--
     <div class="container">
         <h2 class="visible-lg">Large</h2>
         <h2 class="visible-md">Medium</h2>
@@ -82,15 +82,10 @@
         <h2 class="visible-print">Print</h2>
     </div>
         <hr>
-
+-->
         <!-- Footer -->
         <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; rughookingExchange.com 2015</p>
-                </div>
-            </div>
-            <!-- /.row -->
+
         </footer>
 
     </div>

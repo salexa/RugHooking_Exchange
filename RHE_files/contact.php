@@ -37,20 +37,12 @@
         <!-- Page Header -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Rug Hooking Exchange Contact
-                </h1>
+                <h1 align="center" class="page-header">Rug Hooking Exchange</h1>
+                <p align="center"> For questions or comments please send email to: </p>
+                <p align="center"><a href="mailto:sheryl@rughookingexchange.com">sheryl@rughookingexchange.com</a></p>
             </div>
         </div>
         <!-- /.row -->
-
-    <div class="container">
-        <h2 class="visible-lg">Large</h2>
-        <h2 class="visible-md">Medium</h2>
-        <h2 class="visible-sm">Small</h2>
-        <h2 class="visible-xs">Extra Small</h2>
-        <h2 class="visible-print">Print</h2>
-    </div>
-        <hr>
 
 
         <!-- /.row -->
@@ -59,12 +51,7 @@
 
         <!-- Footer -->
         <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
-                </div>
-            </div>
-            <!-- /.row -->
+
         </footer>
 
     </div>

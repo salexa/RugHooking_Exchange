@@ -64,14 +64,6 @@ if ($alert == "'thanks'")
             </div>
         </div>
         <!-- /.row -->
-
-    <div class="container">
-        <h2 class="visible-lg">Large</h2>
-        <h2 class="visible-md">Medium</h2>
-        <h2 class="visible-sm">Small</h2>
-        <h2 class="visible-xs">Extra Small</h2>
-        <h2 class="visible-print">Print</h2>
-    </div>
         <hr>
 
 
